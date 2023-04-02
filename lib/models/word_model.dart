@@ -49,9 +49,12 @@ class Word extends Equatable {
 
   void removeLetter() {
     if (currentIndex >= 0) {
-      letters[currentIndex] = Letter.empty();
-      if (currentIndex != 0) {
-        currentIndex--;
+      if (letters[currentIndex] == Letter.empty()) {
+        if (currentIndex != 0) {
+          currentIndex--;
+        }
+      } else {
+        letters[currentIndex] = Letter.empty();
       }
     }
   }

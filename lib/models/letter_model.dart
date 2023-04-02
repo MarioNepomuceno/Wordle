@@ -18,13 +18,21 @@ class Letter extends Equatable {
   Color get backgroundColor {
     switch (status) {
       case LetterStatus.initial:
-        return Colors.transparent;
+        return const Color.fromARGB(255, 206, 206, 206);
       case LetterStatus.notInWord:
         return notInWordColor;
       case LetterStatus.inWord:
         return inWordColor;
       case LetterStatus.correct:
         return correctColor;
+    }
+  }
+
+  Color get textColor {
+    if (status == LetterStatus.notInWord) {
+      return Color.fromARGB(255, 99, 99, 99);
+    } else {
+      return Colors.black;
     }
   }
 

@@ -141,11 +141,11 @@ class WordleController extends ChangeNotifier {
   void _checkIfWinOrLoss() {
     if (currentWord!.wordString == solution.wordString) {
       gameStatus = GameStatus.won;
-      _listener!.showSnackBar(correctColor,
-          'Você perdeu! Solução: ${solution.wordString}', "Novo Jogo");
+      _listener!.showSnackBar(correctColor, "Você ganhou!", "Novo Jogo");
     } else if (currentWordIndex + 1 >= board.length) {
       gameStatus = GameStatus.lost;
-      _listener!.showSnackBar(correctColor, "Você ganhou!", "Novo Jogo");
+      _listener!.showSnackBar(correctColor,
+          'Você perdeu! Solução: ${solution.wordString}', "Novo Jogo");
     } else {
       gameStatus = GameStatus.playing;
     }

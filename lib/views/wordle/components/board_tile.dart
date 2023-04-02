@@ -16,8 +16,8 @@ class BoardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(4),
-      height: MediaQuery.of(context).size.height * 0.1,
-      width: MediaQuery.of(context).size.height * 0.1,
+      height: MediaQuery.of(context).size.height * 0.08,
+      width: MediaQuery.of(context).size.height * 0.08,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: letter.backgroundColor,
@@ -41,8 +41,14 @@ class BoardTile extends StatelessWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: 3,
-                color: const Color.fromARGB(255, 49, 49, 49),
+                height: 6,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(3),
+                    bottomRight: Radius.circular(3),
+                  ),
+                  color: Color.fromARGB(255, 49, 49, 49),
+                ),
               ),
             )
         ],

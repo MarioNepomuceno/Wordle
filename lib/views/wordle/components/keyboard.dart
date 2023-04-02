@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../helpers/colors_helper.dart';
 import '../../../models/letter_model.dart';
 
 const _qwerty = [
@@ -33,7 +34,10 @@ class Keyboard extends StatelessWidget {
                 children: keyRow.map(
                   (letter) {
                     if (letter == '<-') {
-                      return _KeyBoardButton.delete(onTap: onDeleteTapped);
+                      return _KeyBoardButton.delete(
+                        onTap: onDeleteTapped,
+                        height: MediaQuery.of(context).size.height * 0.06,
+                      );
                     } else if (letter == 'ENTER') {
                       return _KeyBoardButton.enter(
                         onTap: onEnterTapped,
@@ -49,7 +53,8 @@ class Keyboard extends StatelessWidget {
                       backgroundColor: letterKey != List.empty()
                           ? letterKey.backgroundColor
                           : Colors.grey,
-                      height: MediaQuery.of(context).size.height * 0.05,
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      textColor: letterKey.textColor,
                     );
                   },
                 ).toList(),
@@ -67,15 +72,19 @@ class _KeyBoardButton extends StatelessWidget {
     required this.onTap,
     required this.backgroundColor,
     required this.letter,
+    this.textColor = Colors.black,
   }) : super(key: key);
 
-  factory _KeyBoardButton.delete({required VoidCallback onTap}) =>
+  factory _KeyBoardButton.delete({
+    required VoidCallback onTap,
+    required double height,
+  }) =>
       _KeyBoardButton(
-        width: 56,
-        height: 30,
+        height: height,
         onTap: onTap,
         backgroundColor: const Color.fromARGB(255, 209, 81, 81),
-        letter: 'Apagar',
+        letter: '<-',
+        textColor: Colors.black,
       );
 
   factory _KeyBoardButton.enter({
@@ -83,18 +92,18 @@ class _KeyBoardButton extends StatelessWidget {
     required double height,
   }) =>
       _KeyBoardButton(
-          height: height,
-          onTap: onTap,
-          backgroundColor: Colors.greenAccent,
-          letter: 'ENTER');
+        height: height,
+        onTap: onTap,
+        backgroundColor: correctColor,
+        letter: 'ENTER',
+        textColor: Colors.black,
+      );
 
   final double height;
   final double width;
-
   final VoidCallback onTap;
-
+  final Color textColor;
   final Color backgroundColor;
-
   final String letter;
 
   @override
@@ -114,12 +123,14 @@ class _KeyBoardButton extends StatelessWidget {
               border: Border.all(
                 color: const Color.fromARGB(255, 212, 212, 212),
               ),
+              borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
               letter,
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),

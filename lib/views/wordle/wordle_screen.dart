@@ -52,12 +52,12 @@ class _WordleScreenState extends State<WordleScreen> implements WordleListener {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
-          'Termo',
+          'TERMO',
           style: TextStyle(
             color: Colors.black,
             fontSize: 36,
             fontWeight: FontWeight.bold,
-            letterSpacing: 4,
+            letterSpacing: 1,
           ),
         ),
       ),
@@ -71,6 +71,9 @@ class _WordleScreenState extends State<WordleScreen> implements WordleListener {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
                   ShakeWidget(
                     key: wordleController.shakeKey,
                     shakeCount: 3,
