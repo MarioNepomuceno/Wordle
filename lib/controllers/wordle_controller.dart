@@ -4,6 +4,7 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mali/helpers/string_helper.dart';
+import 'package:mali/models/game_option.dart';
 
 import '../components/shaking.dart';
 import '../data/words.dart';
@@ -28,6 +29,7 @@ class WordleController extends ChangeNotifier {
   final shakeKey = GlobalKey<ShakeWidgetState>();
   final focusNode = FocusNode();
 
+  GameOptions gameOptions = GameOptions();
   GameStatus gameStatus = GameStatus.playing;
   int currentWordIndex = 0;
 
@@ -45,8 +47,8 @@ class WordleController extends ChangeNotifier {
       currentWordIndex < board.length ? board[currentWordIndex] : null;
 
   Word solution = Word.fromString(
-    fiveLetterWords[Random().nextInt(fiveLetterWords.length)].toUpperCase(),
-  );
+      // fiveLetterWords[Random().nextInt(fiveLetterWords.length)].toUpperCase(),
+      "MARIO");
 
   final List<List<GlobalKey<FlipCardState>>> flipCardKeys = List.generate(
     6,
@@ -72,6 +74,11 @@ class WordleController extends ChangeNotifier {
     }
   }
 
+  void onCardTapped(Word word, int i) {
+    word.changeLetter(i);
+    notifyListeners();
+  }
+
   Future<void> onEnterTapped() async {
     String exists = fiveLetterWordsAll.firstWhere(
         (element) =>
@@ -79,9 +86,8 @@ class WordleController extends ChangeNotifier {
             currentWord!.wordString.removeSpecials(),
         orElse: () => "");
 
-    if (exists != "") {
+    if (exists != "" || gameOptions.allowAnyWord) {
       if (gameStatus == GameStatus.playing &&
-          currentWord != null &&
           !currentWord!.letters.contains(Letter.empty())) {
         gameStatus = GameStatus.submitting;
 
@@ -207,5 +213,15 @@ class WordleController extends ChangeNotifier {
         }
       }
     }
+  }
+
+  changeAllowAnyWord() {
+    gameOptions.allowAnyWord = !gameOptions.allowAnyWord;
+    notifyListeners();
+  }
+
+  changeShowSpecialCharacters() {
+    gameOptions.showSpecialCharacters = !gameOptions.showSpecialCharacters;
+    notifyListeners();
   }
 }

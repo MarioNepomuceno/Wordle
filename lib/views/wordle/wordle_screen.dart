@@ -46,25 +46,64 @@ class _WordleScreenState extends State<WordleScreen> implements WordleListener {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text(
-          'TERMO',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 36,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1,
-          ),
-        ),
-      ),
-      body: AnimatedBuilder(
-          animation: wordleController,
-          builder: (context, snapshot) {
-            return RawKeyboardListener(
+    return AnimatedBuilder(
+        animation: wordleController,
+        builder: (context, snapshot) {
+          return Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              title: const Text(
+                'TERMO',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1,
+                ),
+              ),
+            ),
+            drawer: Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  const DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                    ),
+                    child: Text("Opções"),
+                  ),
+                  ListTile(
+                    leading: const Tooltip(
+                      message: "Permitir palavras que não existem.",
+                      child: Icon(Icons.help_outline),
+                    ),
+                    title: const Text("Permitir qualquer palavra"),
+                    trailing: Checkbox(
+                      value: wordleController.gameOptions.allowAnyWord,
+                      onChanged: (value) {
+                        wordleController.changeAllowAnyWord();
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    leading: const Tooltip(
+                      message: "Mostrar caracteres especiais. (ã ó ç)",
+                      child: Icon(Icons.help_outline),
+                    ),
+                    title: const Text("Mostra Acentuação"),
+                    trailing: Checkbox(
+                      value: wordleController.gameOptions.showSpecialCharacters,
+                      onChanged: (value) {
+                        wordleController.changeShowSpecialCharacters();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            body: RawKeyboardListener(
               autofocus: true,
               onKey: wordleController.handleKey,
               focusNode: FocusNode(),
@@ -89,7 +128,8 @@ class _WordleScreenState extends State<WordleScreen> implements WordleListener {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: word.letters
                                     .asMap()
-                                    .map((j, letter) => MapEntry(
+                                    .map(
+                                      (j, letter) => MapEntry(
                                         j,
                                         FlipCard(
                                           key: wordleController.flipCardKeys[i]
@@ -99,9 +139,10 @@ class _WordleScreenState extends State<WordleScreen> implements WordleListener {
                                           direction: FlipDirection.HORIZONTAL,
                                           front: GestureDetector(
                                             onTap: () {
-                                              setState(() {
-                                                word.changeLetter(j);
-                                              });
+                                              wordleController.onCardTapped(
+                                                word,
+                                                j,
+                                              );
                                             },
                                             child: BoardTile(
                                               letter: Letter(
@@ -119,7 +160,9 @@ class _WordleScreenState extends State<WordleScreen> implements WordleListener {
                                             letter: letter,
                                             isSelected: false,
                                           ),
-                                        )))
+                                        ),
+                                      ),
+                                    )
                                     .values
                                     .toList(),
                               ),
@@ -137,8 +180,8 @@ class _WordleScreenState extends State<WordleScreen> implements WordleListener {
                   ),
                 ],
               ),
-            );
-          }),
-    );
+            ),
+          );
+        });
   }
 }

@@ -97,6 +97,7 @@ class _KeyBoardButton extends StatelessWidget {
         backgroundColor: correctColor,
         letter: 'ENTER',
         textColor: Colors.black,
+        width: 100,
       );
 
   final double height;

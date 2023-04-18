@@ -30,7 +30,7 @@ class Letter extends Equatable {
 
   Color get textColor {
     if (status == LetterStatus.notInWord) {
-      return Color.fromARGB(255, 99, 99, 99);
+      return const Color.fromARGB(255, 99, 99, 99);
     } else {
       return Colors.black;
     }
